@@ -24,8 +24,8 @@ const getBrowser = createBrowserGetter(puppeteer, {headless: true, devtools: tru
 
     console.log(b1 === b2) // => true
 
-    await b1.close() // => Not yet closed
-    await b2.close() // => Close now.
+    await b1.close() // Not yet closed
+    await b2.close() // Close now.
 })()
 ```
 
