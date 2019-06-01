@@ -2,6 +2,7 @@
 
 module.exports = createBrowserGetter
 module.exports.default = createBrowserGetter
+module.exports.createBrowserGetter = createBrowserGetter
 
 function createBrowserGetter (puppet, opts = {}) {
     let pBrowser
