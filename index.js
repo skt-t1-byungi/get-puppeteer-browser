@@ -12,11 +12,10 @@ function createBrowserGetter (puppet, opts = {}) {
             pBrowser = puppet.launch(opts).then(browser => {
                 const close = browser.close.bind(browser)
                 browser.close = () => {
-                    if (calls === 0 || --calls > 0) return Promise.resolve()
-                    pBrowser = null
-                    process.nextTick(() => {
-                        if (calls === 0) close()
-                    })
+                    if (calls > 0 && --calls === 0) {
+                        pBrowser = null
+                        process.nextTick(close)
+                    }
                     return Promise.resolve()
                 }
                 return browser
