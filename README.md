@@ -33,5 +33,29 @@ const getBrowser = createBrowserGetter(puppeteer, {headless: true, devtools: tru
 ### createBrowserGetter(puppeteer[, launchOptions])
 Create a `getBrowser` function.
 
+#### Debounce option
+Debounce without closing immediately.
+
+```js
+const getBrowser = createBrowserGetter(puppeteer, {debounce: 1000});
+
+(async () => {
+    const b1 = await getBrowser()
+    b1.close()
+
+    delay(900).then(async () => {
+        const b2 = await getBrowser()
+        console.log(b1 === b2) // => true
+        b2.close()
+    })
+
+    delay(1100).then(async () => {
+        const b3 = await getBrowser()
+        console.log(b1 === b3) // => false
+    })
+})()
+```
+
+
 ## License
 MIT

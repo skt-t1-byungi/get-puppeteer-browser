@@ -3,6 +3,8 @@ const puppet = require('puppeteer')
 const createBrowserGetter = require('.').default
 const { Browser } = require('puppeteer/lib/Browser')
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 test('test', async t => {
     const getBrowser = createBrowserGetter(puppet)
 
@@ -27,4 +29,18 @@ test('avoid closing multiple times', async t => {
     await tmp.close()
     tmp.close() // no await
     t.is(await getBrowser(), await getBrowser())
+})
+
+test('debounce close', async t => {
+    t.plan(4)
+    const getBrowser = createBrowserGetter(puppet, { debounce: 200 })
+    const browser = await getBrowser()
+    browser.close().then(() => t.pass())
+    await delay(190)
+    const other1 = await getBrowser()
+    t.is(browser, other1)
+    other1.close().then(() => t.pass())
+    await delay(210)
+    const other2 = await getBrowser()
+    t.not(browser, other2)
 })
