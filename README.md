@@ -47,11 +47,11 @@ const getBrowser = createBrowserGetter(puppeteer, {debounce: 1000});
         const b2 = await getBrowser()
         console.log(b1 === b2) // => true
         b2.close()
-    })
 
-    delay(1100).then(async () => {
-        const b3 = await getBrowser()
-        console.log(b1 === b3) // => false
+        delay(1000).then(async () => {
+            const b3 = await getBrowser()
+            console.log(b2 === b3) // => false
+        })
     })
 })()
 ```
