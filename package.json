@@ -21,7 +21,7 @@
     "license": "MIT",
     "devDependencies": {
         "@types/puppeteer": "^1.12.4",
-        "ava": "^2.0.0",
+        "ava": "^2.1.0",
         "eslint": "^5.16.0",
         "eslint-config-byungi": "^0.2.9",
         "puppeteer": "^1.17.0"
