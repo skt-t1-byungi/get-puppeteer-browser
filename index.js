@@ -11,36 +11,43 @@ function createBrowserGetter (puppet, opts = {}) {
     let pBrowser
     let calls = 0
     let closeTimer = null
-    let closeResolver = null
+    let prevCloseResolver = null
 
     return () => {
         calls++
+
         if (closeTimer) {
-            if (closeResolver) closeResolver()
+            prevCloseResolver()
             clearTimeout(closeTimer)
             closeTimer = null
-            closeResolver = null
+            prevCloseResolver = null
         }
+
         if (!pBrowser) {
             pBrowser = puppet.launch(opts).then(browser => {
                 const close = browser.close
                 browser.close = () => {
                     if (calls === 0 || --calls > 0) return Promise.resolve()
+
                     if (debounce === 0) {
                         pBrowser = null
                         return close.call(browser)
                     }
+
                     return new Promise((resolve, reject) => {
-                        closeResolver = resolve
+                        prevCloseResolver = resolve
+
                         closeTimer = setTimeout(() => {
                             pBrowser = null
                             return close.call(browser).then(resolve, reject)
                         }, debounce)
                     })
                 }
+
                 return browser
             })
         }
+
         return pBrowser
     }
 }

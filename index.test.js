@@ -35,10 +35,12 @@ test('debounce close', async t => {
     t.plan(4)
     const getBrowser = createBrowserGetter(puppet, { debounce: 200 })
     const browser = await getBrowser()
+
     browser.close().then(() => t.pass())
     await delay(190)
     const other1 = await getBrowser()
     t.is(browser, other1)
+
     other1.close().then(() => t.pass())
     await delay(210)
     const other2 = await getBrowser()
