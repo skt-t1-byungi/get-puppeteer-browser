@@ -39,6 +39,9 @@ function createBrowserGetter (puppet, opts = {}) {
 
                         closeTimer = setTimeout(() => {
                             pBrowser = null
+                            closeTimer = null
+                            prevCloseResolver = null
+
                             return close.call(browser).then(resolve, reject)
                         }, debounce)
                     })
